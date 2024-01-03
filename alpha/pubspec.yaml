@@ -12,10 +12,12 @@ environment:
 
 
 dependencies:
+  
   flutter:
     sdk: flutter
+  intl_phone_number_input: 0.7.4
   simple_animations: 5.0.2
-  
+
 cupertino_icons: ^1.0.2
 
 dev_dependencies:

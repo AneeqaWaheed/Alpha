@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'Screens/auth/login_screen.dart';
+import 'screens/auth/PhoneVerificationScreen.dart';
+import 'screens/auth/login_screen.dart';
 import 'screens/home_screen.dart';
 
 //global object for accessing device screen size
@@ -27,6 +28,6 @@ class MyApp extends StatelessWidget {
             // ),
             // useMaterial3: true,
             ),
-        home: const LoginScreen());
+        home: PhoneVerificationScreen());
   }
 }
