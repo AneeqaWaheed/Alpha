@@ -1,4 +1,6 @@
+import 'package:alpha/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'BaseLoginScreen.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
@@ -17,7 +19,7 @@ class LoginScreen extends BaseLoginScreen {
 
   @override
   void onNextButtonPressed(BuildContext context) {
-    // Add logic for the "Next" button in the Login screen
+    Get.toNamed(RoutesClass.getHomeRoute());
   }
 
   @override
