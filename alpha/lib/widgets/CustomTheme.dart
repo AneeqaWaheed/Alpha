@@ -14,49 +14,47 @@ class CustomTheme extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
     return applyTheme
-        ? Builder(
-            builder: (BuildContext scaffoldContext) {
-              return Theme(
-                data: ThemeData(
-                  appBarTheme: AppBarTheme(
-                    centerTitle: true,
-                    elevation: 1,
-                    iconTheme: IconThemeData(color: Colors.white),
-                    titleTextStyle: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 19,
-                    ),
-                    backgroundColor: Color(0xFF7E22CE),
-                  ),
-                  useMaterial3: true,
+        ? Theme(
+            data: ThemeData(
+              appBarTheme: AppBarTheme(
+                centerTitle: true,
+                elevation: 1,
+                iconTheme: IconThemeData(color: Colors.white),
+                titleTextStyle: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 19,
                 ),
-                child: Scaffold(
-                  appBar: AppBar(
-                    title: Text(title),
-                    leading: Builder(
-                      builder: (BuildContext context) {
-                        return IconButton(
-                          onPressed: () {
-                            Scaffold.of(scaffoldContext).openDrawer();
-                          },
-                          icon: const Icon(Icons.dehaze),
-                        );
-                      },
-                    ),
-                    // Add the actions here if needed
-                    actions: [
-                      IconButton(
-                          onPressed: () {}, icon: const Icon(Icons.search)),
-                      IconButton(
-                          onPressed: () {}, icon: const Icon(Icons.more_vert)),
-                    ],
-                  ),
-                  body: child,
+                backgroundColor: Color(0xFF7E22CE),
+              ),
+              useMaterial3: true,
+            ),
+            child: Scaffold(
+              key: scaffoldKey,
+              appBar: AppBar(
+                title: Text(title),
+                leading: IconButton(
+                  onPressed: () {
+                    scaffoldKey.currentState?.openDrawer();
+                  },
+                  icon: const Icon(Icons.dehaze),
                 ),
-              );
-            },
+                // Add the actions here if needed
+                actions: [
+                  IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
+                  IconButton(
+                      onPressed: () {}, icon: const Icon(Icons.more_vert)),
+                ],
+              ),
+              body: Builder(
+                builder: (BuildContext scaffoldContext) {
+                  return child;
+                },
+              ),
+            ),
           )
         : child;
   }

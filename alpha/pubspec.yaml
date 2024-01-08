@@ -17,8 +17,11 @@ dependencies:
     sdk: flutter
   intl_phone_number_input: 0.7.4
   simple_animations: 5.0.2
+  # getx
   get: ^4.6.6
   cached_network_image: ^3.2.3
+  # image picker
+  image_picker: ^1.0.6
 
 cupertino_icons: ^1.0.2
 
