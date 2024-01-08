@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +15,9 @@ class UserChatting extends StatefulWidget {
 }
 
 class _UserChattingState extends State<UserChatting> {
+  bool _showEmoji = false;
+
+  get _textController => null;
   @override
   Widget build(BuildContext context) {
     // Set system UI overlay style here if needed
@@ -22,17 +28,76 @@ class _UserChattingState extends State<UserChatting> {
       ),
     );
 
-    return SafeArea(
-      child: Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            flexibleSpace: _appBar(),
-          ),
-          body: Column(
-            children: [
-              _chatInput(),
-            ],
-          )),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: SafeArea(
+        child: WillPopScope(
+          onWillPop: () {
+            if (_showEmoji) {
+              setState(() => _showEmoji = !_showEmoji);
+              return Future.value(false);
+            } else {
+              return Future.value(true);
+            }
+          },
+          child: Scaffold(
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                flexibleSpace: _appBar(),
+              ),
+              body: Column(
+                children: [
+                  Expanded(
+                    child: StreamBuilder(
+                      builder: (context, snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.waiting:
+                          case ConnectionState.none:
+                          // return const Center(
+                          //   child: CircularProgressIndicator(),
+                          // );
+                          case ConnectionState.active:
+                          case ConnectionState.done:
+                            final _list = [];
+                            if (_list.isNotEmpty) {
+                              return ListView.builder(
+                                  itemCount: _list.length,
+                                  padding:
+                                      EdgeInsets.only(top: mq.height * .01),
+                                  physics: const BouncingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return Text('Message : ${_list[index]}');
+                                  });
+                            } else {
+                              return const Center(
+                                child: Text(
+                                  'Say Hi! 👋',
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              );
+                            }
+                        }
+                      },
+                      stream: null,
+                    ),
+                  ),
+                  _chatInput(),
+                  if (_showEmoji)
+                    SizedBox(
+                      height: mq.height * .35,
+                      child: EmojiPicker(
+                        textEditingController: _textController,
+                        config: Config(
+                          bgColor: const Color.fromARGB(255, 234, 248, 255),
+                          columns: 8,
+                          emojiSizeMax: 32 * (Platform.isIOS ? 1.30 : 1.0),
+                        ),
+                      ),
+                    )
+                ],
+              )),
+        ),
+      ),
     );
   }
 
@@ -94,7 +159,10 @@ class _UserChattingState extends State<UserChatting> {
                 children: [
                   //emoji button
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      FocusScope.of(context).unfocus();
+                      setState(() => _showEmoji = !_showEmoji);
+                    },
                     icon: const Icon(Icons.emoji_emotions,
                         color: Color(0xFF7E22CE), size: 26),
                   ),
@@ -103,6 +171,10 @@ class _UserChattingState extends State<UserChatting> {
                       child: TextField(
                           keyboardType: TextInputType.multiline,
                           maxLines: null,
+                          onTap: () {
+                            if (_showEmoji)
+                              setState(() => _showEmoji = !_showEmoji);
+                          },
                           decoration: InputDecoration(
                               hintText: 'Type Something...',
                               hintStyle: TextStyle(color: Color(0xFF7E22CE)),
