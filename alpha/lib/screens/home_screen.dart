@@ -1,6 +1,5 @@
 import 'package:alpha/widgets/CustomTheme.dart';
 import 'package:alpha/widgets/chat_user_card.dart';
-import 'package:alpha/widgets/profileDrawer.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
 
@@ -12,24 +11,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // searching from search Icon
+  // List<ChatUser> _searchList = [];
   @override
   Widget build(BuildContext context) {
     return CustomTheme(
+      title: 'Alpha ',
       child: Scaffold(
-        appBar: AppBar(
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                icon: const Icon(Icons.dehaze),
-              );
-            },
-          ),
-          title: const Text('Alpha'),
-          centerTitle: true,
-        ),
         floatingActionButton: Padding(
           padding: const EdgeInsets.only(bottom: 10),
           child: FloatingActionButton(
@@ -44,7 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
             return ChatUserCard();
           },
         ),
-        drawer: ProfileDrawer(userName: "Aneeqa Waheed"),
       ),
     );
   }
