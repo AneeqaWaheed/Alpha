@@ -49,8 +49,7 @@ class ProfileDrawer extends StatelessWidget {
               ),
             ),
             onTap: () {
-              // Handle Home button press in the drawer
-              Navigator.pop(context); // Close the drawer
+              Get.toNamed(RoutesClass.getHomeRoute());
             },
           ),
           ListTile(
