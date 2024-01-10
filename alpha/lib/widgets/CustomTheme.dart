@@ -7,12 +7,14 @@ class CustomTheme extends StatelessWidget {
   final Widget child;
   final bool applyTheme;
   final String title;
+  final bool showBottomNavigationBar;
 
   const CustomTheme({
     Key? key,
     required this.child,
     this.applyTheme = true,
     required this.title,
+    this.showBottomNavigationBar = true,
   }) : super(key: key);
 
   @override
@@ -58,43 +60,45 @@ class CustomTheme extends StatelessWidget {
                   return child;
                 },
               ),
-              bottomNavigationBar: BottomNavigationBar(
-                items: const [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.chat),
-                    label: 'Chats',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.watch),
-                    label: 'Status',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.call),
-                    label: 'Calls',
-                  ),
-                ],
-                selectedItemColor: Colors.blue,
-                unselectedItemColor: Colors.grey,
-                currentIndex:
-                    0, // Set the current index based on the active section
-                onTap: (index) {
-                  // Handle tab selection
-                  switch (index) {
-                    case 0:
-                      // Navigate to Chats screen
-                      Get.toNamed(RoutesClass.getHomeRoute());
-                      break;
-                    case 1:
-                      // Navigate to Status screen
-                      Get.toNamed(RoutesClass.getStatusScreen());
-                      break;
-                    case 2:
-                      // Navigate to Calls screen
-                      // Example: Get.to(() => CallsScreen());
-                      break;
-                  }
-                },
-              ),
+              bottomNavigationBar: showBottomNavigationBar
+                  ? BottomNavigationBar(
+                      items: const [
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.chat),
+                          label: 'Chats',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.watch),
+                          label: 'Status',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.call),
+                          label: 'Calls',
+                        ),
+                      ],
+                      selectedItemColor: Color(0xFF7E22CE),
+                      unselectedItemColor: Colors.grey,
+                      currentIndex:
+                          0, // Set the current index based on the active section
+                      onTap: (index) {
+                        // Handle tab selection
+                        switch (index) {
+                          case 0:
+                            // Navigate to Chats screen
+                            Get.toNamed(RoutesClass.getHomeRoute());
+                            break;
+                          case 1:
+                            // Navigate to Status screen
+                            Get.toNamed(RoutesClass.getStatusScreen());
+                            break;
+                          case 2:
+                            // Navigate to Calls screen
+                            // Example: Get.to(() => CallsScreen());
+                            break;
+                        }
+                      },
+                    )
+                  : null,
             ),
           )
         : child;

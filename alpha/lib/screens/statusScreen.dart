@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:alpha/widgets/CustomTheme.dart';
 
 class Statuses extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Status'),
-      ),
-      body: ListView(
-        children: [
-          StatusItem(
-            username: 'John Doe',
-            time: 'Just now',
-            status: 'Feeling good today! 🌞',
-            imageUrl: '',
-          ),
-          StatusItem(
-            username: 'Jane Smith',
-            time: '2 hours ago',
-            status: 'On a vacation 🏖️',
-            imageUrl: '',
-          ),
-          // Add more StatusItems as needed
-        ],
+    return CustomTheme(
+      title: 'Status',
+      child: Scaffold(
+        body: ListView(
+          children: [
+            StatusItem(
+              username: 'John Doe',
+              time: 'Just now',
+              status: 'Feeling good today! 🌞',
+              imageUrl: '',
+            ),
+            StatusItem(
+              username: 'Jane Smith',
+              time: '2 hours ago',
+              status: 'On a vacation 🏖️',
+              imageUrl: '',
+            ),
+            // Add more StatusItems as needed
+          ],
+        ),
       ),
     );
   }
