@@ -1,9 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:alpha/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../routes/routes.dart';
 import '../main.dart';
 
 class ChatUserCard extends StatefulWidget {
@@ -18,25 +16,17 @@ class _ChatUserCardState extends State<ChatUserCard> {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: mq.width * .04, vertical: 4),
-      elevation: 1,
+      elevation: 0.5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: InkWell(
         onTap: () {
-          Get.toNamed(RoutesClass.getHomeRoute());
+          // Navigate to the UserChatting screen when the card is tapped
+
+          Get.toNamed(RoutesClass.getChatUser());
         },
         child: ListTile(
           //user profile Picture
-          leading: ClipRRect(
-            borderRadius: BorderRadius.circular(mq.height * .03),
-            child: CachedNetworkImage(
-              width: mq.height * .05,
-              height: mq.height * .05,
-              imageUrl: 'images/Alpha.PNG',
-              errorWidget: (context, url, error) => const CircleAvatar(
-                child: Icon(CupertinoIcons.person),
-              ),
-            ),
-          ),
+          leading: CircleAvatar(child: Icon(Icons.person)),
 
           //user name
           title: Text('Aneeqa'),

@@ -1,7 +1,6 @@
 import 'package:alpha/widgets/CustomTheme.dart';
 import 'package:alpha/widgets/profileDrawer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
@@ -41,12 +40,12 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(mq.height * 0.1),
                         child: CachedNetworkImage(
-                          width: mq.height * 0.055,
-                          height: mq.height * 0.055,
+                          width: mq.height * 0.55,
+                          height: mq.height * 0.55,
                           imageUrl: widget.user.image,
                           errorWidget: (context, url, error) =>
                               const CircleAvatar(
-                            child: Icon(CupertinoIcons.person_2),
+                            child: Icon(Icons.person_2),
                           ),
                         ),
                       ),
@@ -65,7 +64,7 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                   ),
                 if (widget.user == null || widget.user.image == null)
                   // Placeholder or default avatar when user or user image is null
-                  CircleAvatar(child: Icon(CupertinoIcons.person_2)),
+                  CircleAvatar(child: Icon(Icons.person_2)),
                 SizedBox(height: mq.height * 0.05),
                 TextFormField(
                   initialValue: widget.user?.name ?? '',

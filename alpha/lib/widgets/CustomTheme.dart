@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:alpha/widgets/profileDrawer.dart';
+import 'package:get/get.dart';
+import 'package:alpha/routes/routes.dart';
 
 class CustomTheme extends StatelessWidget {
   final Widget child;
@@ -49,9 +52,47 @@ class CustomTheme extends StatelessWidget {
                       onPressed: () {}, icon: const Icon(Icons.more_vert)),
                 ],
               ),
+              drawer: ProfileDrawer(userName: 'YourUserName'),
               body: Builder(
                 builder: (BuildContext scaffoldContext) {
                   return child;
+                },
+              ),
+              bottomNavigationBar: BottomNavigationBar(
+                items: const [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.chat),
+                    label: 'Chats',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.watch),
+                    label: 'Status',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.call),
+                    label: 'Calls',
+                  ),
+                ],
+                selectedItemColor: Colors.blue,
+                unselectedItemColor: Colors.grey,
+                currentIndex:
+                    0, // Set the current index based on the active section
+                onTap: (index) {
+                  // Handle tab selection
+                  switch (index) {
+                    case 0:
+                      // Navigate to Chats screen
+                      Get.toNamed(RoutesClass.getHomeRoute());
+                      break;
+                    case 1:
+                      // Navigate to Status screen
+                      Get.toNamed(RoutesClass.getStatusScreen());
+                      break;
+                    case 2:
+                      // Navigate to Calls screen
+                      // Example: Get.to(() => CallsScreen());
+                      break;
+                  }
                 },
               ),
             ),

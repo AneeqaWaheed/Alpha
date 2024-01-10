@@ -1,8 +1,7 @@
 import 'dart:io';
-
+import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../main.dart';
@@ -10,14 +9,16 @@ import '../main.dart';
 class UserChatting extends StatefulWidget {
   const UserChatting({Key? key}) : super(key: key);
 
+  get user => null;
+
   @override
   State<UserChatting> createState() => _UserChattingState();
 }
 
 class _UserChattingState extends State<UserChatting> {
+  TextEditingController textEditingController = TextEditingController();
   bool _showEmoji = false;
 
-  get _textController => null;
   @override
   Widget build(BuildContext context) {
     // Set system UI overlay style here if needed
@@ -86,7 +87,7 @@ class _UserChattingState extends State<UserChatting> {
                     SizedBox(
                       height: mq.height * .35,
                       child: EmojiPicker(
-                        textEditingController: _textController,
+                        textEditingController: textEditingController,
                         config: Config(
                           bgColor: const Color.fromARGB(255, 234, 248, 255),
                           columns: 8,
@@ -105,19 +106,23 @@ class _UserChattingState extends State<UserChatting> {
     return Row(
       children: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.back();
+          },
           icon: const Icon(Icons.arrow_back, color: Colors.black54),
         ),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(mq.height * .03),
-          child: CachedNetworkImage(
-            width: mq.height * .05,
-            height: mq.height * .05,
-            imageUrl: 'images/Alpha.PNG',
-            errorWidget: (context, url, error) =>
-                const CircleAvatar(child: Icon(CupertinoIcons.person)),
+        if (widget.user != null && widget.user.image != null)
+          ClipRRect(
+            borderRadius: BorderRadius.circular(mq.height * .1),
+            child: CachedNetworkImage(
+              width: mq.height * .2,
+              height: mq.height * .2,
+              imageUrl: widget.user.image,
+              errorWidget: (context, url, error) => const CircleAvatar(
+                child: Icon(Icons.person),
+              ),
+            ),
           ),
-        ),
         SizedBox(width: 10),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -160,8 +165,11 @@ class _UserChattingState extends State<UserChatting> {
                   //emoji button
                   IconButton(
                     onPressed: () {
-                      FocusScope.of(context).unfocus();
-                      setState(() => _showEmoji = !_showEmoji);
+                      if (_showEmoji) {
+                        setState(() => _showEmoji = _showEmoji);
+                      } else {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                      }
                     },
                     icon: const Icon(Icons.emoji_emotions,
                         color: Color(0xFF7E22CE), size: 26),
@@ -172,8 +180,11 @@ class _UserChattingState extends State<UserChatting> {
                           keyboardType: TextInputType.multiline,
                           maxLines: null,
                           onTap: () {
-                            if (_showEmoji)
-                              setState(() => _showEmoji = !_showEmoji);
+                            if (_showEmoji) {
+                              setState(() => _showEmoji = false);
+                            } else {
+                              FocusScope.of(context).requestFocus(FocusNode());
+                            }
                           },
                           decoration: InputDecoration(
                               hintText: 'Type Something...',
@@ -182,13 +193,13 @@ class _UserChattingState extends State<UserChatting> {
                   //pick image from gallery
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(Icons.emoji_emotions,
+                    icon: const Icon(Icons.image,
                         color: Color(0xFF7E22CE), size: 26),
                   ),
                   //take image from camera
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(Icons.emoji_emotions,
+                    icon: const Icon(Icons.camera,
                         color: Color(0xFF7E22CE), size: 26),
                   ),
                   SizedBox(width: mq.width * .02)
@@ -205,7 +216,7 @@ class _UserChattingState extends State<UserChatting> {
             child: Icon(
               Icons.send,
               color: Colors.white,
-              size: 28,
+              size: 20,
             ),
           )
         ],
