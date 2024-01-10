@@ -17,14 +17,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return CustomTheme(
       title: 'Profile',
+      showBottomNavigationBar: false,
       child: Scaffold(
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.only(bottom: 10),
-          child: FloatingActionButton(
-            onPressed: () {},
-            child: const Icon(Icons.add_comment_rounded),
-          ),
-        ),
         body: Center(
           child: SingleChildScrollView(
             child: Padding(

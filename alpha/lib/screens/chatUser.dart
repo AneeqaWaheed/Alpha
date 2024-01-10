@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import '../main.dart';
 
 class UserChatting extends StatefulWidget {
@@ -18,6 +19,17 @@ class UserChatting extends StatefulWidget {
 class _UserChattingState extends State<UserChatting> {
   TextEditingController textEditingController = TextEditingController();
   bool _showEmoji = false;
+
+  // Function to handle image picking
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      // Handle the picked image file (e.g., display it, upload it, etc.)
+      print("Image picked: ${pickedFile.path}");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,61 +54,61 @@ class _UserChattingState extends State<UserChatting> {
             }
           },
           child: Scaffold(
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                flexibleSpace: _appBar(),
-              ),
-              body: Column(
-                children: [
-                  Expanded(
-                    child: StreamBuilder(
-                      builder: (context, snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.waiting:
-                          case ConnectionState.none:
-                          // return const Center(
-                          //   child: CircularProgressIndicator(),
-                          // );
-                          case ConnectionState.active:
-                          case ConnectionState.done:
-                            final _list = [];
-                            if (_list.isNotEmpty) {
-                              return ListView.builder(
-                                  itemCount: _list.length,
-                                  padding:
-                                      EdgeInsets.only(top: mq.height * .01),
-                                  physics: const BouncingScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return Text('Message : ${_list[index]}');
-                                  });
-                            } else {
-                              return const Center(
-                                child: Text(
-                                  'Say Hi! 👋',
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                              );
-                            }
-                        }
-                      },
-                      stream: null,
-                    ),
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              flexibleSpace: _appBar(),
+            ),
+            body: Column(
+              children: [
+                Expanded(
+                  child: StreamBuilder(
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                        case ConnectionState.none:
+                        // return const Center(
+                        //   child: CircularProgressIndicator(),
+                        // );
+                        case ConnectionState.active:
+                        case ConnectionState.done:
+                          final _list = [];
+                          if (_list.isNotEmpty) {
+                            return ListView.builder(
+                                itemCount: _list.length,
+                                padding: EdgeInsets.only(top: mq.height * .01),
+                                physics: const BouncingScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return Text('Message : ${_list[index]}');
+                                });
+                          } else {
+                            return const Center(
+                              child: Text(
+                                'Say Hi! 👋',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            );
+                          }
+                      }
+                    },
+                    stream: null,
                   ),
-                  _chatInput(),
-                  if (_showEmoji)
-                    SizedBox(
-                      height: mq.height * .35,
-                      child: EmojiPicker(
-                        textEditingController: textEditingController,
-                        config: Config(
-                          bgColor: const Color.fromARGB(255, 234, 248, 255),
-                          columns: 8,
-                          emojiSizeMax: 32 * (Platform.isIOS ? 1.30 : 1.0),
-                        ),
+                ),
+                _chatInput(),
+                if (_showEmoji)
+                  SizedBox(
+                    height: mq.height * .35,
+                    child: EmojiPicker(
+                      textEditingController: textEditingController,
+                      config: Config(
+                        bgColor: const Color.fromARGB(255, 234, 248, 255),
+                        columns: 8,
+                        emojiSizeMax: 32 * (Platform.isIOS ? 1.30 : 1.0),
                       ),
-                    )
-                ],
-              )),
+                    ),
+                  )
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -165,34 +177,37 @@ class _UserChattingState extends State<UserChatting> {
                   //emoji button
                   IconButton(
                     onPressed: () {
-                      if (_showEmoji) {
-                        setState(() => _showEmoji = _showEmoji);
-                      } else {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                      }
+                      FocusScope.of(context).unfocus();
+                      setState(() {
+                        _showEmoji = !_showEmoji;
+                      });
                     },
                     icon: const Icon(Icons.emoji_emotions,
                         color: Color(0xFF7E22CE), size: 26),
                   ),
                   //Input Field
                   Expanded(
-                      child: TextField(
-                          keyboardType: TextInputType.multiline,
-                          maxLines: null,
-                          onTap: () {
-                            if (_showEmoji) {
-                              setState(() => _showEmoji = false);
-                            } else {
-                              FocusScope.of(context).requestFocus(FocusNode());
-                            }
-                          },
-                          decoration: InputDecoration(
-                              hintText: 'Type Something...',
-                              hintStyle: TextStyle(color: Color(0xFF7E22CE)),
-                              border: InputBorder.none))),
+                    child: TextField(
+                      controller: textEditingController,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      onTap: () {
+                        if (_showEmoji) {
+                          setState(() {
+                            _showEmoji = false;
+                          });
+                        }
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Type Something...',
+                        hintStyle: TextStyle(color: Color(0xFF7E22CE)),
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
                   //pick image from gallery
                   IconButton(
-                    onPressed: () {},
+                    onPressed: _pickImage, // Call the pick image function here
                     icon: const Icon(Icons.image,
                         color: Color(0xFF7E22CE), size: 26),
                   ),
