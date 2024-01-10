@@ -1,4 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'package:alpha/routes/routes.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../main.dart';
 
 class MessageCard extends StatefulWidget {
   const MessageCard({super.key});
